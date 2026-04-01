@@ -1,0 +1,66 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // direct connection
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id               String   @id @default(uuid())
+  clientNumber     String   @unique
+  firstName        String
+  lastName         String
+  dob              DateTime?
+  nationality      String?
+  serviceStartDate DateTime
+  serviceEndDate   DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  policies         Policy[]
+  opportunities    Opportunity[]
+  appointments     Appointment[]
+}
+
+model Policy {
+  id                    String   @id @default(uuid())
+  clientId              String
+  providerId            String   // Enum-like: "PVZP", "Slavia", "SV_Pojistovna", "Colonnade"
+  includesBankStatement Boolean  @default(false)
+  premiumAmount         Float
+  startDate             DateTime
+  endDate               DateTime
+  createdAt             DateTime @default(now())
+
+  client                Client   @relation(fields: [clientId], references: [id])
+}
+
+model Opportunity {
+  id                    String   @id @default(uuid())
+  clientId              String?
+  stageName             String   // e.g., "Identifikace příležitostí", "Inicializační jednání", etc.
+  potentialValue        Float
+  createdAt             DateTime @default(now())
+
+  client                Client?  @relation(fields: [clientId], references: [id])
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  clientId  String
+  date      DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+
+  client    Client   @relation(fields: [clientId], references: [id])
+}
