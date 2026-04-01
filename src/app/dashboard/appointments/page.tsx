@@ -39,7 +39,7 @@ export default async function AppointmentsPage() {
                   <div style={{ fontWeight: 600 }}>{apt.client.firstName} {apt.client.lastName}</div>
                   <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{t("Client #")}{apt.client.clientNumber}</div>
                 </td>
-                <td style={{ color: "var(--text-secondary)" }}>{apt.description || t("No description")}</td>
+                <td style={{ color: "var(--text-secondary)" }}>{apt.notes || t("No description")}</td>
                 <td>
                   <Link href={`/dashboard/clients/${apt.clientId}`} style={{ color: "var(--brand-primary)", fontSize: "0.875rem", fontWeight: 600 }}>
                     {t("View Profile →")}
