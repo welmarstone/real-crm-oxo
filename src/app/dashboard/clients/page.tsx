@@ -21,7 +21,7 @@ export default async function ClientsPage({ searchParams }: { searchParams: { q?
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", gap: "1rem" }}>
         <h1 style={{ fontSize: "2rem" }}>{t("Clients Directory")}</h1>
         
         <div style={{ display: "flex", gap: "1rem" }}>
@@ -36,7 +36,8 @@ export default async function ClientsPage({ searchParams }: { searchParams: { q?
       </div>
 
       <div className="glass-panel">
-        <table className="data-table">
+        <div className="table-responsive">
+          <table className="data-table">
           <thead>
             <tr>
               <th>{t("Client #")}</th>
@@ -84,7 +85,8 @@ export default async function ClientsPage({ searchParams }: { searchParams: { q?
               </tr>
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );

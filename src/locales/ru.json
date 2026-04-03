@@ -62,5 +62,19 @@
   "Connect Account": "Подключить аккаунт",
   "Connected": "Подключено",
   "Appointments sync": "Синхронизация встреч",
-  "Tasks & Notes sync": "Синхронизация задач и заметок"
+  "Tasks & Notes sync": "Синхронизация задач и заметок",
+  "Birth Date": "Дата рождения",
+  "Birth Place": "Место рождения",
+  "e.g. Prague": "напр., Прага",
+  "e.g. Czech": "напр., чех",
+  "How did they learn about us": "Как узнали о нас?",
+  "Select Source...": "Выберите источник...",
+  "Instagram": "Instagram",
+  "Google": "Google",
+  "Reference": "Рекомендация",
+  "Promoters": "Промоутеры",
+  "Insurance Brand": "Страховой бренд",
+  "Select Brand...": "Выберите бренд...",
+  "Other Details (Notes)": "Другие детали (Заметки)",
+  "Any additional CRM details...": "Любые дополнительные детали CRM..."
 }

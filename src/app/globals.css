@@ -220,3 +220,85 @@ button {
 .badge-success { background-color: rgba(16, 185, 129, 0.1); color: var(--status-success); }
 .badge-warning { background-color: rgba(245, 158, 11, 0.1); color: var(--status-warning); }
 .badge-info { background-color: rgba(59, 130, 246, 0.1); color: var(--status-info); }
+
+/* --- Mobile Responsiveness --- */
+.mobile-header {
+  display: none;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 1rem;
+}
+
+.table-responsive .data-table {
+  margin-top: 0;
+  min-width: 700px; 
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+  
+  .sidebar-open {
+    overflow: hidden;
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 45;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+  }
+
+  .main-content {
+    padding: 1.5rem 1rem;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .grid-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar-logo {
+    display: none !important; /* hide inside sidebar since we have the header logo */
+  }
+}

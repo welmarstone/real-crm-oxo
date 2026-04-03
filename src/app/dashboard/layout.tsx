@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { LayoutDashboard, Users, Calendar, Settings } from 'lucide-react';
 import { getTranslator } from '@/lib/i18n';
+import MobileNav from '@/components/MobileNav';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const t = getTranslator();
 
   return (
     <div className="app-container">
+      <MobileNav />
       <aside className="sidebar">
         <div className="sidebar-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem', fontWeight: 700, color: 'white' }}>
           <img src="/imgs/logo.png.webp" alt="OXO CRM" style={{ width: 32, height: 32, borderRadius: '8px', objectFit: 'contain' }} />

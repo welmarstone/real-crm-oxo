@@ -13,21 +13,30 @@ export default async function NewClientPage() {
     
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
-    const policyType = formData.get("policyType") as string;
+    const dob = formData.get("dob") ? new Date(formData.get("dob") as string) : undefined;
+    const nationality = formData.get("nationality") as string;
+    const birthPlace = formData.get("birthPlace") as string;
+    const source = formData.get("source") as string;
+    const notes = formData.get("notes") as string;
     
-    // Simulate assigning an intelligent base policy based on type selection constraints
-    const provider = "PVZP"; 
+    // We aren't capturing policyType in DB right now due to schema constraints, but mapping to providerId works!
+    // Wait, let's just insert providerId correctly for the UI.
+    const providerId = formData.get("providerId") as string;
     
     const client = await prisma.client.create({
       data: {
         clientNumber: `CZ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
         firstName,
         lastName,
-        nationality: "Unknown",
+        dob,
+        nationality,
+        birthPlace,
+        source,
+        notes,
         serviceStartDate: new Date(),
         policies: {
           create: {
-             providerId: policyType,
+             providerId,
              premiumAmount: 5000,
              startDate: new Date(),
              endDate: new Date(Date.now() + 86400000 * 365)
@@ -40,16 +49,13 @@ export default async function NewClientPage() {
     redirect(`/dashboard/clients/${client.id}`);
   }
 
-  // Strictly enforce the 8 policies
-  const policyTypes = [
-    "Comprehensive health insurance for foreigners",
-    "Basic insurance for foreigners",
-    "Travel insurance for Czech citizens and foreigners",
-    "Car insurance",
-    "Home and property insurance",
-    "Major risk insurance",
-    "Comprehensive pregnancy insurance",
-    "Liability insurance"
+  const providers = ["Slavia", "PVZP", "SV Pojistovna", "Colonnade"];
+  
+  const sources = [
+    { id: "instagram", name: t("Instagram") },
+    { id: "google", name: t("Google") },
+    { id: "reference", name: t("Reference") },
+    { id: "promoters", name: t("Promoters") }
   ];
 
   return (
@@ -77,13 +83,46 @@ export default async function NewClientPage() {
             </div>
           </div>
 
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Birth Date")}</label>
+              <input type="date" name="dob" style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }} />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Birth Place")}</label>
+              <input type="text" name="birthPlace" placeholder={t("e.g. Prague")} style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }} />
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div>
+               <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Nationality")}</label>
+               <input type="text" name="nationality" placeholder={t("e.g. Czech")} style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }} />
+            </div>
+            <div>
+               <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("How did they learn about us")}</label>
+               <select name="source" style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }}>
+                  <option value="">{t("Select Source...")}</option>
+                  {sources.map(s => (
+                     <option key={s.id} value={s.id}>{s.name}</option>
+                  ))}
+               </select>
+            </div>
+          </div>
+
           <div>
-             <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Assign Official Policy")}</label>
-             <select name="policyType" required style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }}>
-                {policyTypes.map(p => (
+             <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Insurance Brand")}</label>
+             <select name="providerId" required style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }}>
+                <option value="">{t("Select Brand...")}</option>
+                {providers.map(p => (
                    <option key={p} value={p}>{p}</option>
                 ))}
              </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Other Details (Notes)")}</label>
+            <textarea name="notes" rows={3} placeholder={t("Any additional CRM details...")} style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none", resize: "vertical" }} />
           </div>
 
           <div style={{ marginTop: "1rem" }}>

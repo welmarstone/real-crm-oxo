@@ -15,7 +15,8 @@ export default async function AppointmentsPage() {
       <h1 style={{ marginBottom: '2rem', fontSize: '2rem' }}>{t("Appointments Hub")}</h1>
       
       <div className="glass-panel">
-        <table className="data-table">
+        <div className="table-responsive">
+          <table className="data-table">
           <thead>
             <tr>
               <th>{t("Date & Time")}</th>
@@ -48,7 +49,8 @@ export default async function AppointmentsPage() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );
