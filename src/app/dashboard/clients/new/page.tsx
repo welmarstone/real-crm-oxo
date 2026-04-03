@@ -38,8 +38,8 @@ export default async function NewClientPage() {
           create: {
              providerId,
              premiumAmount: 5000,
-             startDate: new Date(),
-             endDate: new Date(Date.now() + 86400000 * 365)
+             startDate: new Date(formData.get("startDate") as string || Date.now()),
+             endDate: new Date(formData.get("endDate") as string || Date.now() + 86400000 * 365)
           }
         }
       }
@@ -118,6 +118,17 @@ export default async function NewClientPage() {
                    <option key={p} value={p}>{p}</option>
                 ))}
              </select>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+             <div>
+               <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Coverage Start Date")}</label>
+               <input type="date" name="startDate" required style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }} />
+             </div>
+             <div>
+               <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--text-secondary)" }}>{t("Expiration Date")}</label>
+               <input type="date" name="endDate" required style={{ width: "100%", padding: "0.75rem", background: "var(--bg-secondary)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", color: "var(--text-primary)", outline: "none" }} />
+             </div>
           </div>
 
           <div>

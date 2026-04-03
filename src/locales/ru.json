@@ -76,5 +76,14 @@
   "Insurance Brand": "Страховой бренд",
   "Select Brand...": "Выберите бренд...",
   "Other Details (Notes)": "Другие детали (Заметки)",
-  "Any additional CRM details...": "Любые дополнительные детали CRM..."
+  "Any additional CRM details...": "Любые дополнительные детали CRM...",
+  "Coverage Start Date": "Начало действия полиса",
+  "Expiration Date": "Дата окончания",
+  "Make an Appointment": "Назначить встречу",
+  "Back to Appointments": "К списку встреч",
+  "Select Client": "Выберите клиента",
+  "Notes": "Заметки",
+  "Send automated SMS reminder to client": "Отправить автоматическое SMS-напоминание клиенту",
+  "Save Appointment": "Сохранить встречу",
+  "Appointment scheduled successfully! Reminder queued.": "Встреча успешно назначена! Напоминание поставлено в очередь."
 }

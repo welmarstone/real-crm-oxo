@@ -3,8 +3,9 @@ import { getTranslator } from "@/lib/i18n";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
 import Link from "next/link";
 
-export default async function AppointmentsPage() {
+export default async function AppointmentsPage({ searchParams }: { searchParams: { success?: string } }) {
   const t = getTranslator();
+  const showSuccess = searchParams.success === "true";
   const appointments = await prisma.appointment.findMany({
     orderBy: { date: "asc" },
     include: { client: true }
@@ -12,7 +13,18 @@ export default async function AppointmentsPage() {
 
   return (
     <div>
-      <h1 style={{ marginBottom: '2rem', fontSize: '2rem' }}>{t("Appointments Hub")}</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+        <h1 style={{ fontSize: "2rem" }}>{t("Appointments Hub")}</h1>
+        <Link href="/dashboard/appointments/new" className="badge badge-info hover-brand-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.875rem", border: "none", cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          + {t("Make an Appointment")}
+        </Link>
+      </div>
+
+      {showSuccess && (
+         <div style={{ background: "rgba(16, 185, 129, 0.15)", color: "var(--status-success)", padding: "1rem", borderRadius: "8px", border: "1px solid rgba(16, 185, 129, 0.3)", marginBottom: "2rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <CalendarIcon size={18} /> {t("Appointment scheduled successfully! Reminder queued.")}
+         </div>
+      )}
       
       <div className="glass-panel">
         <div className="table-responsive">
