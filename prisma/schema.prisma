@@ -1,7 +1,6 @@
 datasource db {
-  provider  = "postgresql"
-  url       = env("PRISMA_DATABASE_URL") // connection pooling
-  directUrl = env("DATABASE_URL") // direct connection
+  provider  = "sqlite"
+  url       = env("DATABASE_URL")
 }
 
 generator client {
@@ -15,47 +14,102 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
+model InsuranceCompany {
+  id                 String   @id @default(uuid())
+  name               String   @unique
+  logoUrl            String?
+  basePrice          Float    @default(0)
+  durationMonths     Int      @default(12) // months
+  additionalDiscount Float    @default(0) // percentage e.g. 5.0 = 5%
+  notes              String?
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  policies           Policy[]
+}
+
+model Middleman {
+  id            String   @id @default(uuid())
+  fullName      String
+  phone         String?
+  email         String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  clients       Client[]
+  policies      Policy[]
+}
+
 model Client {
-  id               String   @id @default(uuid())
-  clientNumber     String   @unique
-  firstName        String
-  lastName         String
-  dob              DateTime?
-  nationality      String?
-  birthPlace       String?
-  source           String?
-  notes            String?
-  serviceStartDate DateTime
-  serviceEndDate   DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  
-  policies         Policy[]
-  opportunities    Opportunity[]
-  appointments     Appointment[]
+  id                    String    @id @default(uuid())
+  clientNumber          String    @unique
+  insuranceId           String    @unique
+  firstName             String
+  lastName              String
+  address               String?
+  phone                 String?
+  whatsappNumber        String?
+  email                 String?
+  passportNumber        String?
+  residencePermitNumber String?
+  nationality           String?
+  visaExpiryDate        DateTime?
+  dob                   DateTime?
+  birthPlace            String?
+  source                String?   // instagram, google, reference, promoters
+  middlemanId           String?
+  serviceStartDate      DateTime
+  serviceEndDate        DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  middleman             Middleman?    @relation(fields: [middlemanId], references: [id])
+  policies              Policy[]
+  opportunities         Opportunity[]
+  appointments          Appointment[]
+  notes                 ClientNote[]
 }
 
 model Policy {
-  id                    String   @id @default(uuid())
+  id                    String    @id @default(uuid())
   clientId              String
-  providerId            String   // Enum-like: "PVZP", "Slavia", "SV_Pojistovna", "Colonnade"
-  includesBankStatement Boolean  @default(false)
+  insuranceCompanyId    String?
+  providerId            String    // legacy / fallback name
+  durationMonths        Int       @default(12)
+  includesBankStatement Boolean   @default(false)
   premiumAmount         Float
+  companyShare          Float     @default(0)  // 50% — goes to insurance company
+  oxoShare              Float     @default(0)  // 30% — our revenue
+  middlemanShare        Float     @default(0)  // 20% — commission paid to middleman
+  middlemanId           String?
   startDate             DateTime
   endDate               DateTime
-  createdAt             DateTime @default(now())
+  createdAt             DateTime  @default(now())
 
-  client                Client   @relation(fields: [clientId], references: [id])
+  client                Client            @relation(fields: [clientId], references: [id])
+  insuranceCompany      InsuranceCompany? @relation(fields: [insuranceCompanyId], references: [id])
+  middleman             Middleman?        @relation(fields: [middlemanId], references: [id])
+}
+
+model ClientNote {
+  id        String   @id @default(uuid())
+  clientId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  client    Client   @relation(fields: [clientId], references: [id])
 }
 
 model Opportunity {
-  id                    String   @id @default(uuid())
-  clientId              String?
-  stageName             String   // e.g., "Identifikace příležitostí", "Inicializační jednání", etc.
-  potentialValue        Float
-  createdAt             DateTime @default(now())
+  id             String   @id @default(uuid())
+  clientId       String?
+  stageName      String
+  potentialValue Float
+  createdAt      DateTime @default(now())
 
-  client                Client?  @relation(fields: [clientId], references: [id])
+  client         Client?  @relation(fields: [clientId], references: [id])
 }
 
 model Appointment {

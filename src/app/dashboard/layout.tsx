@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, Users, Calendar, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, Settings, Building2, Handshake } from 'lucide-react';
 import { getTranslator } from '@/lib/i18n';
 import MobileNav from '@/components/MobileNav';
 
@@ -23,6 +23,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href="/dashboard" className="nav-link"><LayoutDashboard size={20} /> {t("Dashboard")}</Link>
           <Link href="/dashboard/clients" className="nav-link"><Users size={20} /> {t("Clients Pipeline")}</Link>
           <Link href="/dashboard/appointments" className="nav-link"><Calendar size={20} /> {t("Appointments")}</Link>
+          <Link href="/dashboard/middlemen" className="nav-link"><Handshake size={20} /> {t("Middlemen")}</Link>
+          <Link href="/dashboard/insurance-companies" className="nav-link"><Building2 size={20} /> {t("Insurance Companies")}</Link>
           
           <div style={{ flex: 1 }}></div>
 
