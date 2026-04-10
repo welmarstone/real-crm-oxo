@@ -45,7 +45,7 @@ model Middleman {
 model Client {
   id                    String    @id @default(uuid())
   clientNumber          String    @unique
-  insuranceId           String    @unique
+  insuranceId           String    @unique @default(uuid())
   firstName             String
   lastName              String
   address               String?
