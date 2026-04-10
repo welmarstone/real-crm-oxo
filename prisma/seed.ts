@@ -46,6 +46,7 @@ async function main() {
     await prisma.client.create({
       data: {
         clientNumber: `CZ-2024-${String(i).padStart(3, '0')}`,
+        insuranceId: `INS-2024-${Math.floor(10000 + Math.random() * 90000)}`,
         firstName: isForeigner ? 'Arthur' : 'Jan',
         lastName: isForeigner ? 'Dent' : 'Novák',
         dob: new Date(1990 + Math.floor(Math.random() * 10), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)),
